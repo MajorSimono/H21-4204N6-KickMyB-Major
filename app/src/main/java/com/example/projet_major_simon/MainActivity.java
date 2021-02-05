@@ -2,6 +2,7 @@ package com.example.projet_major_simon;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,5 +19,12 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Connexion");
         setContentView(view);
 
+        binding.buttonInscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, InscriptionActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }
