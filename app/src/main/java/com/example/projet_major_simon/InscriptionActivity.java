@@ -3,6 +3,7 @@ package com.example.projet_major_simon;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -23,5 +24,15 @@ public class InscriptionActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setTitle("Inscription");
         setContentView(view);
+
+        binding.buttonInscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(InscriptionActivity.this, AccueilActivity.class);
+                startActivity(i);
+            }
+        });
     }
+
+
 }
