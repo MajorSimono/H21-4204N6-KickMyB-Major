@@ -1,21 +1,28 @@
 package com.example.projet_major_simon;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.projet_major_simon.databinding.ActivityCreationBinding;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Calendar;
 
 public class CreationActivity extends AppCompatActivity {
 
     private ActivityCreationBinding binding;
+    private ActionBarDrawerToggle abToggle;
+
 
     EditText date;
     DatePickerDialog datePickerDialog;
@@ -64,6 +71,48 @@ public class CreationActivity extends AppCompatActivity {
 
 
 
+            }
+        });
+
+        NavigationView nv = binding.navView;
+        DrawerLayout dl = binding.drawerLayout;
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        abToggle = new ActionBarDrawerToggle(this,dl,R.string.drawer_open,R.string.drawer_clode){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+
+            }
+        };
+        dl.addDrawerListener(abToggle);
+        abToggle.syncState();
+
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id=item.getItemId();
+                if (id == R.id.nav_item_Accueil){
+                    Intent i = new Intent(CreationActivity.this, AccueilActivity.class);
+                    startActivity(i);
+                }
+                if (id == R.id.nav_item_CreattionTache){
+                    Intent i = new Intent(CreationActivity.this, CreationActivity.class);
+                    startActivity(i);
+                }
+                if (id == R.id.nav_item_deconnexion){
+                    Intent i = new Intent(CreationActivity.this, MainActivity.class);
+                    startActivity(i);
+                }
+
+                return false;
             }
         });
 

@@ -4,13 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.projet_major_simon.databinding.ActivityAccueilBinding;
-import com.example.projet_major_simon.databinding.ActivityMainBinding;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.view.View;
 
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,11 +35,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
-public class AccueilActivity extends AppCompatActivity {
+
+public class AccueilActivity extends AppCompatActivity  {
 
     TacheAdapter adapter;
 
  private ActivityAccueilBinding binding;
+ private ActionBarDrawerToggle abToggle;
 
 
 
@@ -38,11 +53,13 @@ public class AccueilActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setTitle("Accueil");
         setContentView(view);
+
+
         this.initReycler();
         this.remplirRecycler();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
 
        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +74,59 @@ public class AccueilActivity extends AppCompatActivity {
 
 
         });
+
+        NavigationView nv = binding.navView;
+        DrawerLayout dl = binding.drawerLayout;
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        abToggle = new ActionBarDrawerToggle(this,dl,R.string.drawer_open,R.string.drawer_clode){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+
+            }
+        };
+        dl.addDrawerListener(abToggle);
+        abToggle.syncState();
+
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+              int id=item.getItemId();
+              if (id == R.id.nav_item_Accueil){
+                  Intent i = new Intent(AccueilActivity.this, AccueilActivity.class);
+                  startActivity(i);
+              }
+                if (id == R.id.nav_item_CreattionTache){
+                    Intent i = new Intent(AccueilActivity.this, CreationActivity.class);
+                    startActivity(i);
+                }
+                if (id == R.id.nav_item_deconnexion){
+                    Intent i = new Intent(AccueilActivity.this, MainActivity.class);
+                    startActivity(i);
+                }
+
+                return false;
+            }
+        });
+
+
+
     }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        abToggle.syncState();
+    }
+
 
     private void  remplirRecycler() {
         for (int i =0 ; i < 200 ; i++) {
@@ -82,4 +151,7 @@ public class AccueilActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
     }
+
+
+
 }

@@ -1,5 +1,7 @@
 package com.example.projet_major_simon;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,10 @@ import java.util.List;
 
 public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder> {
     public List<Tache> list;
+    Context context;
+
+
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -28,19 +34,25 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
         public TextView tvPourcentage;
         public TextView tvTempsEcouler;
         public TextView tvDate;
+        public LinearLayout linearLayout;
+
         public MyViewHolder(LinearLayout v) {
             super(v);
             tvName = v.findViewById(R.id.tvName);
             tvPourcentage = v.findViewById(R.id.tvPourcentage);
             tvTempsEcouler = v.findViewById(R.id.tvTempsEcouler);
             tvDate = v.findViewById(R.id.tvDate);
+            linearLayout = v.findViewById(R.id.linear_Layout);
         }
+
+
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public TacheAdapter() {
         list = new ArrayList<>();
     }
+
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -49,7 +61,9 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
         // create a new view
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.tache_item, parent, false);
+
         MyViewHolder vh = new MyViewHolder(v);
+        context = parent.getContext();
         return vh;
     }
 
@@ -64,6 +78,19 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
         holder.tvTempsEcouler.setText(TacheCourante.tempsEcoule+" / 7");
         holder.tvDate.setText(TacheCourante.dateLimite.toString());// TODO setText sur un integer crash
 
+
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,ConsultationActivity.class);
+                i.putExtra("name",TacheCourante.name);
+                i.putExtra("Pourcentage",TacheCourante.pourcentage+"%");
+                i.putExtra("TempsE",TacheCourante.tempsEcoule+" / 7");
+                i.putExtra("Date",TacheCourante.dateLimite.toString());
+                context.startActivity(i);
+            }
+        });
+
     }
 
     // renvoie la taille de la liste
@@ -71,5 +98,6 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
     public int getItemCount() {
         return list.size();
     }
+
 }
 
