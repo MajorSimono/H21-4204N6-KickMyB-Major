@@ -1,6 +1,7 @@
 package com.example.projet_major_simon;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.example.projet_major_simon.databinding.ActivityAccueilBinding;
@@ -122,9 +123,24 @@ public class AccueilActivity extends AppCompatActivity  {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (abToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         abToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        abToggle.onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
     }
 
 
