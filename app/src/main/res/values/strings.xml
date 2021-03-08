@@ -12,4 +12,5 @@
 
     <string name="drawer_open">Close me</string>
     <string name="drawer_clode">Open me</string>
+    <string name="userlogedin">FILLER</string>
 </resources>

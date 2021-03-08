@@ -35,7 +35,7 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Service service = RetrofitUtil.post();
         SignupRequest signup = new SignupRequest();
-        signup.username = "test2";
+        signup.username = "test1";
         signup.password= "123";
         Call<SignupRequest> call = service.Signuprequest(signup);
         Response<SignupRequest> response = call.execute();

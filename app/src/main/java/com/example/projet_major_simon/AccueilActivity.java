@@ -21,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -55,6 +56,8 @@ public class AccueilActivity extends AppCompatActivity  {
         setTitle("Accueil");
         setContentView(view);
 
+    TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
+      user.setText(getIntent().getStringExtra("username"));
 
         this.initReycler();
         this.remplirRecycler();

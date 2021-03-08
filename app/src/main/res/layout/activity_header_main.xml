@@ -7,7 +7,7 @@
     android:background="@color/purple_200">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/Text_UserNameDrawer"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_weight="1"
