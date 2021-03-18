@@ -35,11 +35,13 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Service service = RetrofitUtil.post();
         SignupRequest signup = new SignupRequest();
-        signup.username = "test1";
+        signup.username = "test2";
         signup.password= "123";
         Call<SignupRequest> call = service.Signuprequest(signup);
         Response<SignupRequest> response = call.execute();
         SignupRequest resultat = response.body();
+        String username = new String();
+        username = response.body().username;
         Log.i("RETROFIT", resultat.toString());
     }
 
@@ -54,5 +56,15 @@ public class ExampleInstrumentedTest {
         Response<SigninRequest> response = call.execute();
         SigninRequest resultat = response.body();
         Log.i("RETROFIT", resultat.toString());
+    }
+
+    @Test
+    public void testsignout() throws IOException {
+        // Context of the app under test.
+        Service service = RetrofitUtil.post();
+
+        Call<String> call = service.Signoutrequest();
+        Response<String> response = call.execute();
+        Log.i("RETROFIT", response.body());
     }
 }

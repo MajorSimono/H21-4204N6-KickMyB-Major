@@ -16,7 +16,13 @@ import android.widget.TextView;
 
 
 import com.example.projet_major_simon.databinding.ActivityConsultationBinding;
+import com.example.projet_major_simon.http.RetrofitUtil;
+import com.example.projet_major_simon.http.Service;
 import com.google.android.material.navigation.NavigationView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ConsultationActivity extends AppCompatActivity {
 
@@ -35,6 +41,10 @@ public class ConsultationActivity extends AppCompatActivity {
         setTitle("Consultation");
         setContentView(view);
 
+        final Service service = RetrofitUtil.post();
+
+        TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
+        user.setText(getIntent().getStringExtra("username"));
 
         binding.tvName.setText(getIntent().getStringExtra("name"));
         binding.tvDateEche.setText(getIntent().getStringExtra("Date"));
@@ -77,15 +87,29 @@ public class ConsultationActivity extends AppCompatActivity {
                 int id=item.getItemId();
                 if (id == R.id.nav_item_Accueil){
                     Intent i = new Intent(ConsultationActivity.this, AccueilActivity.class);
+                    i.putExtra("username", getIntent().getStringExtra("username"));
+
                     startActivity(i);
                 }
                 if (id == R.id.nav_item_CreattionTache){
                     Intent i = new Intent(ConsultationActivity.this, CreationActivity.class);
+                    i.putExtra("username", getIntent().getStringExtra("username"));
+
                     startActivity(i);
                 }
                 if (id == R.id.nav_item_deconnexion){
-                    Intent i = new Intent(ConsultationActivity.this, MainActivity.class);
-                    startActivity(i);
+                    service.Signoutrequest().enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            Intent i = new Intent(ConsultationActivity.this, MainActivity.class);
+                            startActivity(i);
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
                 }
 
                 return false;

@@ -21,6 +21,7 @@ import java.util.List;
 public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder> {
     public List<Tache> list;
     Context context;
+    String username;
 
 
 
@@ -87,6 +88,7 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
                 i.putExtra("Pourcentage",TacheCourante.pourcentage+"%");
                 i.putExtra("TempsE",TacheCourante.tempsEcoule+" / 7");
                 i.putExtra("Date",TacheCourante.dateLimite.toString());
+                i.putExtra("username", username);
                 context.startActivity(i);
             }
         });

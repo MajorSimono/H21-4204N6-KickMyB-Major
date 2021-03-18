@@ -57,7 +57,7 @@ public class InscriptionActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
 
                             SignupRequest resultat = response.body();
-                            final String user = resultat.toString();
+                            final String user = resultat.username;
 
                             Intent i = new Intent(InscriptionActivity.this, AccueilActivity.class);
                             i.putExtra("username",user);

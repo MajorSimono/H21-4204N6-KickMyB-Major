@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_weight="1"
-        android:text="Nom de l'utilisateur"
+        android:text=""
         android:paddingLeft="20dp"/>
 
 

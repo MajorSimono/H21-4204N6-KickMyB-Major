@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.projet_major_simon.http.RetrofitUtil;
+import com.example.projet_major_simon.http.Service;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,6 +40,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class AccueilActivity extends AppCompatActivity  {
 
@@ -56,7 +63,9 @@ public class AccueilActivity extends AppCompatActivity  {
         setTitle("Accueil");
         setContentView(view);
 
-    TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
+        final Service service = RetrofitUtil.post();
+
+       TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
       user.setText(getIntent().getStringExtra("username"));
 
         this.initReycler();
@@ -71,6 +80,8 @@ public class AccueilActivity extends AppCompatActivity  {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(AccueilActivity.this, CreationActivity.class);
+                    i.putExtra("username", getIntent().getStringExtra("username"));
+
                     startActivity(i);
                 }
 
@@ -106,15 +117,31 @@ public class AccueilActivity extends AppCompatActivity  {
               int id=item.getItemId();
               if (id == R.id.nav_item_Accueil){
                   Intent i = new Intent(AccueilActivity.this, AccueilActivity.class);
+                  i.putExtra("username", getIntent().getStringExtra("username"));
                   startActivity(i);
               }
                 if (id == R.id.nav_item_CreattionTache){
                     Intent i = new Intent(AccueilActivity.this, CreationActivity.class);
+                    i.putExtra("username", getIntent().getStringExtra("username"));
                     startActivity(i);
                 }
                 if (id == R.id.nav_item_deconnexion){
-                    Intent i = new Intent(AccueilActivity.this, MainActivity.class);
-                    startActivity(i);
+
+                    service.Signoutrequest().enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            Intent i = new Intent(AccueilActivity.this, MainActivity.class);
+                            startActivity(i);
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+
+
+
                 }
 
                 return false;
@@ -155,7 +182,9 @@ public class AccueilActivity extends AppCompatActivity  {
             T.tempsEcoule = 0 + (new Random().nextInt(8));
             T.dateLimite =  new Date(121,3,20);
             adapter.list.add(T)  ;
+
         }
+        adapter.username =  getIntent().getStringExtra("username");
         adapter.notifyDataSetChanged();
     }
 
