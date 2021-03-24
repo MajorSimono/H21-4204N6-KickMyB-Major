@@ -17,7 +17,23 @@ public class RetrofitCookie {
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client())
-                    .baseUrl("https://kickmyb-server.herokuapp.com/")
+                    .baseUrl("http://10.0.2.2:8080/")
+                    .build();
+
+            instance = retrofit.create(ServiceCookie.class);
+            return instance;
+        } else {
+            return instance;
+        }
+    }
+
+    public static ServiceCookie post(){
+        if (instance == null) { //  ca sera le cas au tout premier appel
+            Retrofit retrofit = new Retrofit.Builder()
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client())
+                    .baseUrl("http://10.0.2.2:8080/")
                     .build();
 
             instance = retrofit.create(ServiceCookie.class);

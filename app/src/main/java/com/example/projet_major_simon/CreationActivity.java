@@ -10,18 +10,26 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.projet_major_simon.databinding.ActivityCreationBinding;
+import com.example.projet_major_simon.http.RetrofitCookie;
 import com.example.projet_major_simon.http.RetrofitUtil;
 import com.example.projet_major_simon.http.Service;
+import com.example.projet_major_simon.http.ServiceCookie;
+import com.example.projet_major_simon.transfer.AddTaskRequest;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,18 +52,48 @@ public class CreationActivity extends AppCompatActivity {
         setTitle("Création de tâche");
         setContentView(view);
 
-        final Service service = RetrofitUtil.post();
+        final ServiceCookie service = RetrofitCookie.post();
 
         TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
         user.setText(getIntent().getStringExtra("username"));
 
+
+
         binding.buttonAjouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreationActivity.this, AccueilActivity.class);
-                i.putExtra("username", getIntent().getStringExtra("username"));
 
-                startActivity(i);
+                final String name = binding.EditTextTachename.getText().toString();
+                final String dateech = binding.date.getText().toString();
+
+              AddTaskRequest task =  new AddTaskRequest();
+              task.name = name;
+                try {
+                    task.deadLine = new SimpleDateFormat("dd/MM/yyyy").parse(dateech);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                service.AddTask(task).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Intent i = new Intent(CreationActivity.this, AccueilActivity.class);
+                        i.putExtra("username", getIntent().getStringExtra("username"));
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(CreationActivity.this,"sa marche pas",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+
+
+
+
             }
         });
 

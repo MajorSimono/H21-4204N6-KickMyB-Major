@@ -1,8 +1,13 @@
 package com.example.projet_major_simon.http;
 
+import com.example.projet_major_simon.Tache;
+import com.example.projet_major_simon.transfer.AddTaskRequest;
+import com.example.projet_major_simon.transfer.HomeItemResponse;
 import com.example.projet_major_simon.transfer.SigninRequest;
 import com.example.projet_major_simon.transfer.SigninResponse;
 import com.example.projet_major_simon.transfer.SignupRequest;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,5 +27,15 @@ public interface Service {
 
     @POST("api/id/signout")
     Call<String> Signoutrequest();
+
+
+    @POST("api/add")
+    Call<AddTaskRequest> AddTask(@Body AddTaskRequest addTaskRequest);
+
+
+    @GET("api/home")
+    Call<List<HomeItemResponse>> HomeItemResponse();
+
+
 
 }

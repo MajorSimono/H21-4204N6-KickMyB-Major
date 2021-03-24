@@ -16,8 +16,10 @@ import android.widget.TextView;
 
 
 import com.example.projet_major_simon.databinding.ActivityConsultationBinding;
+import com.example.projet_major_simon.http.RetrofitCookie;
 import com.example.projet_major_simon.http.RetrofitUtil;
 import com.example.projet_major_simon.http.Service;
+import com.example.projet_major_simon.http.ServiceCookie;
 import com.google.android.material.navigation.NavigationView;
 
 import retrofit2.Call;
@@ -41,7 +43,7 @@ public class ConsultationActivity extends AppCompatActivity {
         setTitle("Consultation");
         setContentView(view);
 
-        final Service service = RetrofitUtil.post();
+        final ServiceCookie service = RetrofitCookie.post();
 
         TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
         user.setText(getIntent().getStringExtra("username"));

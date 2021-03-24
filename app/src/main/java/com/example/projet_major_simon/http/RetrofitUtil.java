@@ -14,12 +14,26 @@ public class RetrofitUtil {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client())
                 .baseUrl("http://10.0.2.2:8080/")
                 .build();
         Service service = retrofit.create(Service.class);
         return service;
 
     }
+
+    public static Service get(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("http://10.0.2.2:8080/")
+                .client(client())
+                .build();
+        Service service = retrofit.create(Service.class);
+        return service;
+
+    }
+
 
     private static OkHttpClient client() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

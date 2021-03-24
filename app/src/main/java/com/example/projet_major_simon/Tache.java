@@ -4,7 +4,8 @@ import java.util.Date;
 
 public class Tache {
     public String name;
-    public int pourcentage;
-    public int tempsEcoule;
-    public Date dateLimite;
+    public int percentageDone;
+    public int percentageTimeSpent;
+    public Date deadline;
+    public  Long id;
 }

@@ -15,7 +15,9 @@ import com.example.projet_major_simon.Tache;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder> {
@@ -73,11 +75,12 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Tache TacheCourante = list.get(position);
         holder.tvName.setText(TacheCourante.name);
-        holder.tvPourcentage.setText(TacheCourante.pourcentage+"%");
-        holder.tvTempsEcouler.setText(TacheCourante.tempsEcoule+" / 7");
-        holder.tvDate.setText(TacheCourante.dateLimite.toString());// TODO setText sur un integer crash
+        holder.tvPourcentage.setText(TacheCourante.percentageDone+"%");
+        holder.tvTempsEcouler.setText(TacheCourante.percentageTimeSpent+" / 7");
+        holder.tvDate.setText(format.format(Date.parse(TacheCourante.deadline.toString())));// TODO setText sur un integer crash
 
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +88,9 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
             public void onClick(View v) {
                 Intent i = new Intent(context,ConsultationActivity.class);
                 i.putExtra("name",TacheCourante.name);
-                i.putExtra("Pourcentage",TacheCourante.pourcentage+"%");
-                i.putExtra("TempsE",TacheCourante.tempsEcoule+" / 7");
-                i.putExtra("Date",TacheCourante.dateLimite.toString());
+                i.putExtra("Pourcentage",TacheCourante.percentageDone+"%");
+                i.putExtra("TempsE",TacheCourante.percentageTimeSpent+" / 7");
+                i.putExtra("Date",TacheCourante.deadline.toString());
                 i.putExtra("username", username);
                 context.startActivity(i);
             }

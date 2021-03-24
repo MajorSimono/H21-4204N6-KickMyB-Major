@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.projet_major_simon.databinding.ActivityMainBinding;
+import com.example.projet_major_simon.http.RetrofitCookie;
 import com.example.projet_major_simon.http.RetrofitUtil;
 import com.example.projet_major_simon.http.Service;
+import com.example.projet_major_simon.http.ServiceCookie;
 import com.example.projet_major_simon.transfer.SigninRequest;
 import com.example.projet_major_simon.transfer.SignupRequest;
 
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
 
-        final Service service = RetrofitUtil.post();
+        final ServiceCookie service = RetrofitCookie.post();
         final EditText et_u = findViewById(R.id.Edit_Text_Username);
         final EditText et_p = findViewById(R.id.Edit_Text_Password);
 

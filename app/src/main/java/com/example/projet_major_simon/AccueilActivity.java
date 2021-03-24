@@ -12,8 +12,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.projet_major_simon.http.RetrofitCookie;
 import com.example.projet_major_simon.http.RetrofitUtil;
 import com.example.projet_major_simon.http.Service;
+import com.example.projet_major_simon.http.ServiceCookie;
+import com.example.projet_major_simon.transfer.HomeItemResponse;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -22,6 +25,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -38,6 +42,7 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -63,9 +68,11 @@ public class AccueilActivity extends AppCompatActivity  {
         setTitle("Accueil");
         setContentView(view);
 
-        final Service service = RetrofitUtil.post();
+        final ServiceCookie service = RetrofitCookie.post();
 
-       TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
+
+
+        TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
       user.setText(getIntent().getStringExtra("username"));
 
         this.initReycler();
@@ -175,17 +182,39 @@ public class AccueilActivity extends AppCompatActivity  {
 
 
     private void  remplirRecycler() {
-        for (int i =0 ; i < 200 ; i++) {
-            Tache T = new Tache();
-            T.name = "Tâche" + i;
-            T.pourcentage = 0 + (new Random().nextInt(101));
-            T.tempsEcoule = 0 + (new Random().nextInt(8));
-            T.dateLimite =  new Date(121,3,20);
-            adapter.list.add(T)  ;
 
-        }
-        adapter.username =  getIntent().getStringExtra("username");
-        adapter.notifyDataSetChanged();
+        final ServiceCookie serviceGet = RetrofitCookie.get();
+
+        serviceGet.HomeItemResponse().enqueue(new Callback<List<HomeItemResponse>>() {
+            @Override
+            public void onResponse(Call<List<HomeItemResponse>> call, Response<List<HomeItemResponse>> response) {
+                Toast.makeText(AccueilActivity.this,"sa marche",Toast.LENGTH_LONG).show();
+
+                if (response.isSuccessful()) {
+                    for (int i = 0; i < response.body().size(); i++){
+                        Tache T = new Tache();
+                        T.name = response.body().get(i).name;
+                        T.percentageDone = response.body().get(i).percentageDone;
+                        T.percentageTimeSpent = response.body().get(i).percentageTimeSpent;
+                        T.deadline =  response.body().get(i).deadline;
+                        adapter.list.add(T)  ;
+
+                    }
+                    adapter.username =  getIntent().getStringExtra("username");
+                    adapter.notifyDataSetChanged();
+
+                }else {
+                    Log.i("RETROFIT", response.code()+"");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<HomeItemResponse>> call, Throwable t) {
+                Toast.makeText(AccueilActivity.this,"sa marche pas",Toast.LENGTH_LONG).show();
+            }
+        });
+
+
     }
 
     private void initReycler(){
