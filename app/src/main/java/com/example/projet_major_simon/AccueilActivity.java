@@ -188,7 +188,7 @@ public class AccueilActivity extends AppCompatActivity  {
         serviceGet.HomeItemResponse().enqueue(new Callback<List<HomeItemResponse>>() {
             @Override
             public void onResponse(Call<List<HomeItemResponse>> call, Response<List<HomeItemResponse>> response) {
-                Toast.makeText(AccueilActivity.this,"sa marche",Toast.LENGTH_LONG).show();
+
 
                 if (response.isSuccessful()) {
                     for (int i = 0; i < response.body().size(); i++){
@@ -197,6 +197,7 @@ public class AccueilActivity extends AppCompatActivity  {
                         T.percentageDone = response.body().get(i).percentageDone;
                         T.percentageTimeSpent = response.body().get(i).percentageTimeSpent;
                         T.deadline =  response.body().get(i).deadline;
+                        T.id = response.body().get(i).id;
                         adapter.list.add(T)  ;
 
                     }

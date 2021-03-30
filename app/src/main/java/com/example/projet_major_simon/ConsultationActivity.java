@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.projet_major_simon.databinding.ActivityConsultationBinding;
@@ -44,6 +45,8 @@ public class ConsultationActivity extends AppCompatActivity {
         setContentView(view);
 
         final ServiceCookie service = RetrofitCookie.post();
+        final ServiceCookie serviceGet = RetrofitCookie.get();
+
 
         TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
         user.setText(getIntent().getStringExtra("username"));
@@ -56,8 +59,23 @@ public class ConsultationActivity extends AppCompatActivity {
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ConsultationActivity.this, AccueilActivity.class);
-                startActivity(i);
+
+                serviceGet.progressChange(getIntent().getLongExtra("idtache", 0),Integer.parseInt(binding.tvPourcentage.getText().toString())).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Intent i = new Intent(ConsultationActivity.this, AccueilActivity.class);
+                        i.putExtra("username", getIntent().getStringExtra("username"));
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(ConsultationActivity.this,"sa marche pas",Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+
 
             }
         });

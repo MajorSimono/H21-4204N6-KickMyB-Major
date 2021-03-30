@@ -4,6 +4,9 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/linear_Layout">
+
+
+
     <TextView
         android:id="@+id/tvName"
 

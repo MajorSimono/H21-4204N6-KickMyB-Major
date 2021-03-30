@@ -4,6 +4,7 @@ import com.example.projet_major_simon.transfer.AddTaskRequest;
 import com.example.projet_major_simon.transfer.HomeItemResponse;
 import com.example.projet_major_simon.transfer.SigninRequest;
 import com.example.projet_major_simon.transfer.SignupRequest;
+import com.example.projet_major_simon.transfer.TaskDetailResponse;
 
 import java.util.List;
 
@@ -33,4 +34,10 @@ public interface ServiceCookie {
 
     @GET("api/home")
     Call<List<HomeItemResponse>> HomeItemResponse();
+
+    @GET("api/detail/{id}")
+    Call<TaskDetailResponse> taskdetail(@Path("id") Long id);
+
+    @GET("api/progress/{id}/{value}")
+    Call<String> progressChange(@Path("id") Long id, @Path("value") int value);
 }

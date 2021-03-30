@@ -7,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.collection.ArraySet;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projet_major_simon.Tache;
+import com.example.projet_major_simon.http.RetrofitCookie;
+import com.example.projet_major_simon.http.ServiceCookie;
+import com.example.projet_major_simon.transfer.TaskDetailResponse;
 
 import org.w3c.dom.Text;
 
@@ -20,11 +24,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder> {
     public List<Tache> list;
     Context context;
     String username;
-
+    final ServiceCookie serviceGet = RetrofitCookie.get();
 
 
 
@@ -33,6 +41,7 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+
         public TextView tvName;
         public TextView tvPourcentage;
         public TextView tvTempsEcouler;
@@ -41,6 +50,7 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
 
         public MyViewHolder(LinearLayout v) {
             super(v);
+
             tvName = v.findViewById(R.id.tvName);
             tvPourcentage = v.findViewById(R.id.tvPourcentage);
             tvTempsEcouler = v.findViewById(R.id.tvTempsEcouler);
@@ -86,13 +96,27 @@ public class TacheAdapter extends RecyclerView.Adapter<TacheAdapter.MyViewHolder
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,ConsultationActivity.class);
-                i.putExtra("name",TacheCourante.name);
-                i.putExtra("Pourcentage",TacheCourante.percentageDone+"%");
-                i.putExtra("TempsE",TacheCourante.percentageTimeSpent+" / 7");
-                i.putExtra("Date",TacheCourante.deadline.toString());
-                i.putExtra("username", username);
-                context.startActivity(i);
+
+                serviceGet.taskdetail(TacheCourante.id).enqueue(new Callback<TaskDetailResponse>() {
+                    @Override
+                    public void onResponse(Call<TaskDetailResponse> call, Response<TaskDetailResponse> response) {
+                        Intent i = new Intent(context,ConsultationActivity.class);
+                        i.putExtra("name",response.body().name);
+                        i.putExtra("Pourcentage",response.body().percentageDone+"");
+                        i.putExtra("TempsE",response.body().percentageTimeSpent+" / 7");
+                        i.putExtra("Date",format.format(Date.parse(response.body().deadLine.toString())));
+                        i.putExtra("idtache", response.body().id);
+                        i.putExtra("username", username);
+                        context.startActivity(i);
+                    }
+
+                    @Override
+                    public void onFailure(Call<TaskDetailResponse> call, Throwable t) {
+                        Toast.makeText(context,"sa pas",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+
             }
         });
 
