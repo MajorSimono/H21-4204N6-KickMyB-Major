@@ -17,7 +17,7 @@ public class RetrofitCookie {
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client())
-                    .baseUrl("http://10.0.2.2:8080/")
+                    .baseUrl("https://secure-coast-68819.herokuapp.com/")
                     .build();
 
             instance = retrofit.create(ServiceCookie.class);
@@ -33,7 +33,7 @@ public class RetrofitCookie {
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client())
-                    .baseUrl("http://10.0.2.2:8080/")
+                    .baseUrl("https://secure-coast-68819.herokuapp.com/")
                     .build();
 
             instance = retrofit.create(ServiceCookie.class);
