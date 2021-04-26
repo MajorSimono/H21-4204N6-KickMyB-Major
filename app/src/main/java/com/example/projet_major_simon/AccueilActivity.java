@@ -65,7 +65,7 @@ public class AccueilActivity extends AppCompatActivity  {
 
         binding = ActivityAccueilBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        setTitle("Accueil");
+        setTitle(getString(R.string.Accueil_Title));
         setContentView(view);
 
         final ServiceCookie service = RetrofitCookie.post();

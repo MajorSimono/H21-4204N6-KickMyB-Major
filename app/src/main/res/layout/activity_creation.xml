@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Nom de la tâche"
+            android:text="@string/name_creation"
 
             android:textAlignment="center"
             android:textSize="25sp" />
@@ -68,7 +68,7 @@
                 android:gravity="center"
 
 
-                android:text="Date d'échéance"
+                android:text="@string/date_creation"
 
 
                 android:textAlignment="center"
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:background="#d4d4d4"
-            android:hint="Select Date..."
+            android:hint="@string/select_date_creation"
             android:padding="15dp"
             android:backgroundTint="@color/design_default_color_primary"
             android:textColor="@color/white"
@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"
-            android:text="ajouter la tâche"
+            android:text="@string/ajouter_creation"
             android:layout_marginRight="10px"
             />
 

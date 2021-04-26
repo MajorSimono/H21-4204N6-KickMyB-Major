@@ -3,13 +3,13 @@
     <group>
         <item android:id="@+id/nav_item_Accueil"
 
-            android:title="Accueil" />
+            android:title="@string/accueil_menu" />
         <item android:id="@+id/nav_item_CreattionTache"
 
-            android:title="Création de tâche" />
+            android:title="@string/creation_menu" />
         <item android:id="@+id/nav_item_deconnexion"
 
-            android:title="Déconnexion" />
+            android:title="@string/deconnexion_menu" />
     </group>
 
 </menu>

@@ -49,7 +49,7 @@ public class CreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCreationBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        setTitle("Création de tâche");
+        setTitle(getString(R.string.Creation_title));
         setContentView(view);
 
         final ServiceCookie service = RetrofitCookie.post();

@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Nom d'utilisateur"
+            android:text="@string/name_main"
 
             android:textAlignment="center"
             android:textSize="25sp" />
@@ -53,7 +53,7 @@
             android:gravity="center"
 
 
-            android:text="Mots de passe"
+            android:text="@string/mdp_main"
 
 
             android:textAlignment="center"
@@ -86,14 +86,14 @@
             android:layout_height="80dp"
             android:layout_marginRight="10px"
             android:layout_weight="1"
-            android:text="Connexion" />
+            android:text="@string/connexion_main" />
 
         <Button
             android:id="@+id/button_inscription"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"
-            android:text="Inscription" />
+            android:text="@string/inscription_main" />
     </LinearLayout>
 
 

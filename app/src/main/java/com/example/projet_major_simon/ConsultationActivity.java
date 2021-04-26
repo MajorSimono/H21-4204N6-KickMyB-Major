@@ -41,7 +41,7 @@ public class ConsultationActivity extends AppCompatActivity {
 
         binding = ActivityConsultationBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        setTitle("Consultation");
+        setTitle(getString(R.string.Consultation_title));
         setContentView(view);
 
         final ServiceCookie service = RetrofitCookie.post();

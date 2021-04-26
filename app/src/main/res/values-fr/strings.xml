@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Projet_Major_Simon</string>
+    <string name="title_activity_accueil">AccueilActivité</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Premier Fragment</string>
+    <string name="second_fragment_label">deuxieme Fragment</string>
+    <string name="next">suivant</string>
+    <string name="previous">précédent</string>
+
+    <string name="hello_first_fragment">bonjour premier fragment</string>
+    <string name="hello_second_fragment">bonjour deuxieme fragment. Arg: %1$s</string>
+
+    <string name="drawer_open">ferme moi</string>
+    <string name="drawer_clode">Ouvre moi</string>
+    <string name="userlogedin">FILTRE</string>
+    <string name="cosultation_name">Nom:</string>
+    <string name="date_consultation">Date d\'échéance:</string>
+    <string name="temps_consultation">Temps écoulé:</string>
+    <string name="pourcentage_consultation">Pourcentage:</string>
+    <string name="change_consulatation">Changer</string>
+    <string name="name_creation">Nom de la tâche</string>
+    <string name="date_creation">Date d\'échéance</string>
+    <string name="select_date_creation">Sélectionner une date...</string>
+    <string name="ajouter_creation">ajouter la tâche</string>
+    <string name="name_inscription">Nom d\'utilisateur</string>
+    <string name="mdp_inscription">Mots de passe</string>
+    <string name="confirmation_inscription">Confirmation du mots de passe</string>
+    <string name="inscription_inscription">Inscription</string>
+    <string name="name_main">Nom d\'utilisateur</string>
+    <string name="mdp_main">Mots de passe</string>
+    <string name="connexion_main">Connexion</string>
+    <string name="inscription_main">Inscription</string>
+    <string name="name_accueil">Nom de tâche</string>
+    <string name="pourcentage_accueil">Pourcentage</string>
+    <string name="temps_accueil">Temps écoulé</string>
+    <string name="date_accueil">Date limite</string>
+    <string name="accueil_menu">Accueil</string>
+    <string name="creation_menu">Création de tâche</string>
+    <string name="deconnexion_menu">Déconnexion</string>
+    <string name="Accueil_Title">Accueil</string>
+    <string name="Consultation_title">Consultation</string>
+    <string name="Creation_title">Création de tâche</string>
+    <string name="Inscription_title">Inscription</string>
+    <string name="connexion_title">Connexion</string>
+</resources>

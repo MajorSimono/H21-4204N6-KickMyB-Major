@@ -15,27 +15,27 @@
 
         <TextView
             android:id="@+id/tvTitleName"
-            android:text="Nom de tâche"
+            android:text="@string/name_accueil"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/tvTitlePourcentage"
-            android:text="Pourcentage"
+            android:text="@string/pourcentage_accueil"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tvTitleTempsEcouler"
-            android:text="Temps écoulé"
+            android:text="@string/temps_accueil"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/tvTitleDate"
-            android:text="Date limite"
+            android:text="@string/date_accueil"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>

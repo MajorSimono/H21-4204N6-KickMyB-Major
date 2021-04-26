@@ -30,7 +30,7 @@
         android:id="@+id/tv_Nametit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nom:"
+        android:text="@string/cosultation_name"
         tools:layout_editor_absoluteX="143dp"
         tools:layout_editor_absoluteY="162dp"
         android:textSize="25sp"
@@ -56,7 +56,7 @@
             android:id="@+id/tv_DateEchetit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date d'échéance:"
+            android:text="@string/date_consultation"
             tools:layout_editor_absoluteX="143dp"
             tools:layout_editor_absoluteY="162dp"
             android:textSize="25sp"
@@ -82,7 +82,7 @@
             android:id="@+id/tv_TempsEcouletit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Temps écoulé:"
+            android:text="@string/temps_consultation"
             tools:layout_editor_absoluteX="143dp"
             tools:layout_editor_absoluteY="162dp"
             android:textSize="25sp"
@@ -109,7 +109,7 @@
         android:id="@+id/tv_Pourcentagetit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pourcentage:"
+        android:text="@string/pourcentage_consultation"
         tools:layout_editor_absoluteX="143dp"
         tools:layout_editor_absoluteY="162dp"
         android:textSize="25sp"
@@ -141,7 +141,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
-        android:text="Change" />
+        android:text="@string/change_consulatation" />
 
 
 </LinearLayout>

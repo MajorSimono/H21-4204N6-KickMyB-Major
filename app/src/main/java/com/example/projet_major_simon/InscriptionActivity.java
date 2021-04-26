@@ -33,7 +33,7 @@ public class InscriptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityInscriptionBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        setTitle("Inscription");
+        setTitle(getString(R.string.Inscription_title));
         setContentView(view);
 
 
