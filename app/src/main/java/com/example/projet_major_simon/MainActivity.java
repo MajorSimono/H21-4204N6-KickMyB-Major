@@ -2,8 +2,11 @@ package com.example.projet_major_simon;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -20,8 +23,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static java.lang.Thread.sleep;
+
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
+
+    ProgressDialog progressD;
+    ServiceCookie service;
+    SigninRequest signin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +41,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
 
-        final ServiceCookie service = RetrofitCookie.post();
+
+
+
+        service = RetrofitCookie.post();
         final EditText et_u = findViewById(R.id.Edit_Text_Username);
         final EditText et_p = findViewById(R.id.Edit_Text_Password);
 
@@ -47,34 +59,71 @@ public class MainActivity extends AppCompatActivity {
         binding.buttonConnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SigninRequest signin = new SigninRequest();
+                signin = new SigninRequest();
                 signin.username = et_u.getText().toString();
                 signin.password = et_p.getText().toString();
 
 
-                service.Signinrequest(signin).enqueue(new Callback<SigninRequest>() {
-                    @Override
-                    public void onResponse(Call<SigninRequest> call, Response<SigninRequest> response) {
-                        if (response.isSuccessful()) {
 
-                            SignupRequest resultat = response.body();
-                            final String user = resultat.username;
 
-                            Intent i = new Intent(MainActivity.this, AccueilActivity.class);
-                            i.putExtra("username",user);
-                            startActivity(i);
 
-                        }else {
-                            Log.i("RETROFIT", response.code()+"");
-                        }
-                    }
+                    progressD = ProgressDialog.show(MainActivity.this, "Please wait",
+                            "Long operation starts...", true);
 
-                    @Override
-                    public void onFailure(Call<SigninRequest> call, Throwable t) {
-                        Log.i("RETROFIT", t.getMessage());
-                    }
-                });
+
+        new DialogTask<>().execute();
+
+
             }
         });
+    }
+
+    class DialogTask<A,B,C> extends AsyncTask<A,B,C> {
+
+        @Override
+        protected void onPostExecute(C c) {
+            super.onPostExecute(c);
+
+            service.Signinrequest(signin).enqueue(new Callback<SigninRequest>() {
+                @Override
+                public void onResponse(Call<SigninRequest> call, Response<SigninRequest> response) {
+                    if (response.isSuccessful()) {
+
+                        SignupRequest resultat = response.body();
+                        final String user = resultat.username;
+
+                        Intent i = new Intent(MainActivity.this, AccueilActivity.class);
+                        i.putExtra("username",user);
+
+                        progressD.dismiss();
+
+                        Log.i("sleep","sleep 2 sec");
+
+                        startActivity(i);
+
+                    }else {
+                        Log.i("RETROFIT", response.code()+"");
+                        progressD.dismiss();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SigninRequest> call, Throwable t) {
+                    Log.i("RETROFIT", t.getMessage());
+                }
+            });
+
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

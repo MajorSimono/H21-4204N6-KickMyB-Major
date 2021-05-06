@@ -1,7 +1,9 @@
 package com.example.projet_major_simon;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.example.projet_major_simon.databinding.ActivityAccueilBinding;
@@ -56,6 +58,8 @@ public class AccueilActivity extends AppCompatActivity  {
 
  private ActivityAccueilBinding binding;
  private ActionBarDrawerToggle abToggle;
+    ProgressDialog progressD;
+    ServiceCookie service;
 
 
 
@@ -68,17 +72,19 @@ public class AccueilActivity extends AppCompatActivity  {
         setTitle(getString(R.string.Accueil_Title));
         setContentView(view);
 
-        final ServiceCookie service = RetrofitCookie.post();
+        service = RetrofitCookie.post();
 
 
 
         TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
       user.setText(getIntent().getStringExtra("username"));
 
-        this.initReycler();
-        this.remplirRecycler();
 
 
+        progressD = ProgressDialog.show(AccueilActivity.this, "Please wait",
+                "Long operation starts...", true);
+        // start the task that will stop it
+        new DialogTask<>().execute();
 
 
        FloatingActionButton fab = findViewById(R.id.fab);
@@ -134,19 +140,10 @@ public class AccueilActivity extends AppCompatActivity  {
                 }
                 if (id == R.id.nav_item_deconnexion){
 
-                    service.Signoutrequest().enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            Intent i = new Intent(AccueilActivity.this, MainActivity.class);
-                            startActivity(i);
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-
-                        }
-                    });
-
+                    progressD = ProgressDialog.show(AccueilActivity.this, "Please wait",
+                            "Long operation starts...", true);
+                    // start the task that will stop it
+                    new logoutTask<>().execute();
 
 
                 }
@@ -230,6 +227,56 @@ public class AccueilActivity extends AppCompatActivity  {
 
     }
 
+    class DialogTask<A,B,C> extends AsyncTask<A,B,C> {
 
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+            initReycler();
+            remplirRecycler();
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+
+    class logoutTask<A,B,C> extends AsyncTask<A,B,C> {
+
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+            service.Signoutrequest().enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Intent i = new Intent(AccueilActivity.this, MainActivity.class);
+                    startActivity(i);
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 
 }

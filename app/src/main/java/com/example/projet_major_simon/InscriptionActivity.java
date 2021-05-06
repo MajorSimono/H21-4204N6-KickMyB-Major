@@ -3,7 +3,9 @@ package com.example.projet_major_simon;
 
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +30,9 @@ import retrofit2.Response;
 
 public class InscriptionActivity extends AppCompatActivity {
     private ActivityInscriptionBinding binding;
+    ServiceCookie service;
+    ProgressDialog progressD;
+    SignupRequest signup;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +42,7 @@ public class InscriptionActivity extends AppCompatActivity {
         setContentView(view);
 
 
-        final ServiceCookie service = RetrofitCookie.post();
+         service = RetrofitCookie.post();
         final EditText et_u = findViewById(R.id.Edit_Text_Username);
         final EditText et_p = findViewById(R.id.Edit_Text_Password);
 
@@ -48,39 +53,61 @@ public class InscriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                SignupRequest signup = new SignupRequest();
+                 signup = new SignupRequest();
                signup.username = et_u.getText().toString();
                 signup.password = et_p.getText().toString();
 
-
-                service.Signuprequest(signup).enqueue(new Callback<SignupRequest>() {
-                    @Override
-                    public void onResponse(Call<SignupRequest> call, Response<SignupRequest> response) {
-                        if (response.isSuccessful()) {
-
-                            SignupRequest resultat = response.body();
-                            final String user = resultat.username;
-
-                            Intent i = new Intent(InscriptionActivity.this, AccueilActivity.class);
-                            i.putExtra("username",user);
-                            startActivity(i);
-
-                        }else {
-                            Log.i("RETROFIT", response.code()+"");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<SignupRequest> call, Throwable t) {
-                        Log.i("RETROFIT", t.getMessage());
-                    }
-                });
+                progressD = ProgressDialog.show(InscriptionActivity.this, "Please wait",
+                        "Long operation starts...", true);
+                // start the task that will stop it
+                new DialogTask<>().execute();
 
 
 
             }
         });
     }
+    class DialogTask<A,B,C> extends AsyncTask<A,B,C> {
 
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+
+            service.Signuprequest(signup).enqueue(new Callback<SignupRequest>() {
+                @Override
+                public void onResponse(Call<SignupRequest> call, Response<SignupRequest> response) {
+                    if (response.isSuccessful()) {
+
+                        SignupRequest resultat = response.body();
+                        final String user = resultat.username;
+
+                        Intent i = new Intent(InscriptionActivity.this, AccueilActivity.class);
+                        i.putExtra("username",user);
+                        startActivity(i);
+
+                    }else {
+                        Log.i("RETROFIT", response.code()+"");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SignupRequest> call, Throwable t) {
+                    Log.i("RETROFIT", t.getMessage());
+                }
+            });
+
+
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 
 }

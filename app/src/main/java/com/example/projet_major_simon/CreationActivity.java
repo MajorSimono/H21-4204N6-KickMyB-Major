@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -39,7 +41,9 @@ public class CreationActivity extends AppCompatActivity {
 
     private ActivityCreationBinding binding;
     private ActionBarDrawerToggle abToggle;
-
+    ProgressDialog progressD;
+    ServiceCookie service;
+    AddTaskRequest task;
 
     EditText date;
     DatePickerDialog datePickerDialog;
@@ -52,7 +56,7 @@ public class CreationActivity extends AppCompatActivity {
         setTitle(getString(R.string.Creation_title));
         setContentView(view);
 
-        final ServiceCookie service = RetrofitCookie.post();
+        service = RetrofitCookie.post();
 
         TextView user = binding.navView.getHeaderView(0).findViewById(R.id.Text_UserNameDrawer);
         user.setText(getIntent().getStringExtra("username"));
@@ -66,7 +70,7 @@ public class CreationActivity extends AppCompatActivity {
                 final String name = binding.EditTextTachename.getText().toString();
                 final String dateech = binding.date.getText().toString();
 
-              AddTaskRequest task =  new AddTaskRequest();
+                task =  new AddTaskRequest();
               task.name = name;
                 try {
                     task.deadLine = new SimpleDateFormat("dd/MM/yyyy").parse(dateech);
@@ -74,21 +78,11 @@ public class CreationActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                progressD = ProgressDialog.show( CreationActivity.this, "Please wait",
+                        "Long operation starts...", true);
 
+                new DialogTask<>().execute();
 
-                service.AddTask(task).enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        Intent i = new Intent(CreationActivity.this, AccueilActivity.class);
-                        i.putExtra("username", getIntent().getStringExtra("username"));
-                        startActivity(i);
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(CreationActivity.this,"sa marche pas",Toast.LENGTH_LONG).show();
-                    }
-                });
 
 
 
@@ -165,18 +159,10 @@ public class CreationActivity extends AppCompatActivity {
                     startActivity(i);
                 }
                 if (id == R.id.nav_item_deconnexion){
-                    service.Signoutrequest().enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            Intent i = new Intent(CreationActivity.this, MainActivity.class);
-                            startActivity(i);
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-
-                        }
-                    });
+                    progressD = ProgressDialog.show(CreationActivity.this, "Please wait",
+                            "Long operation starts...", true);
+                    // start the task that will stop it
+                    new logoutTask<>().execute();
                 }
 
                 return false;
@@ -207,4 +193,68 @@ public class CreationActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
+
+    class DialogTask<A,B,C> extends AsyncTask<A,B,C> {
+
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+
+            service.AddTask(task).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Intent i = new Intent(CreationActivity.this, AccueilActivity.class);
+                    i.putExtra("username", getIntent().getStringExtra("username"));
+                    startActivity(i);
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(CreationActivity.this,"sa marche pas",Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    class logoutTask<A,B,C> extends AsyncTask<A,B,C> {
+
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+            service.Signoutrequest().enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Intent i = new Intent(CreationActivity.this, MainActivity.class);
+                    startActivity(i);
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }
