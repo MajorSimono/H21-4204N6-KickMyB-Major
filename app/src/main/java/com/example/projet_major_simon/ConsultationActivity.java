@@ -62,14 +62,25 @@ public class ConsultationActivity extends AppCompatActivity {
         binding.tvTempsEcoule.setText(getIntent().getStringExtra("TempsE"));
         binding.tvPourcentage.setText(getIntent().getStringExtra("Pourcentage"));
 
+
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               Integer pour = Integer.parseInt(binding.tvPourcentage.getText().toString());
 
                 progressD = ProgressDialog.show(ConsultationActivity.this, "Please wait",
                         "Long operation starts...", true);
-                new DialogTask<>().execute();
+
+
+                if (pour >= 0 & pour <= 100)
+                {
+                    new DialogTask<>().execute();
+                }
+                else {
+                    progressD.dismiss();
+
+                    Toast.makeText(ConsultationActivity.this,"Percentage need to be between 0 and 100",Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -148,18 +159,24 @@ public class ConsultationActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(C c) {
-            progressD.dismiss();
             serviceGet.progressChange(getIntent().getLongExtra("idtache", 0),Integer.parseInt(binding.tvPourcentage.getText().toString())).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Intent i = new Intent(ConsultationActivity.this, AccueilActivity.class);
-                    i.putExtra("username", getIntent().getStringExtra("username"));
-                    startActivity(i);
+
+
+                        Intent i = new Intent(ConsultationActivity.this, AccueilActivity.class);
+                        i.putExtra("username", getIntent().getStringExtra("username"));
+                        progressD.dismiss();
+
+                        startActivity(i);
+
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     Toast.makeText(ConsultationActivity.this,"sa marche pas",Toast.LENGTH_LONG).show();
+                    progressD.dismiss();
+
 
                 }
             });
@@ -181,16 +198,18 @@ public class ConsultationActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(C c) {
-            progressD.dismiss();
             service.Signoutrequest().enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     Intent i = new Intent(ConsultationActivity.this, MainActivity.class);
                     startActivity(i);
+                    progressD.dismiss();
+
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
+                    progressD.dismiss();
 
                 }
             });

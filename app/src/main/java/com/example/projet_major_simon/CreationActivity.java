@@ -203,9 +203,18 @@ public class CreationActivity extends AppCompatActivity {
             service.AddTask(task).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
+
+                    if (response.isSuccessful()) {
                     Intent i = new Intent(CreationActivity.this, AccueilActivity.class);
                     i.putExtra("username", getIntent().getStringExtra("username"));
                     startActivity(i);
+
+                    }else {
+                        Log.i("RETROFIT", response.code()+"");
+                        Toast.makeText(CreationActivity.this,"task name already exists",Toast.LENGTH_SHORT).show();
+
+
+                    }
                 }
 
                 @Override
@@ -235,8 +244,12 @@ public class CreationActivity extends AppCompatActivity {
             service.Signoutrequest().enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
+
+
                     Intent i = new Intent(CreationActivity.this, MainActivity.class);
                     startActivity(i);
+
+
                 }
 
                 @Override

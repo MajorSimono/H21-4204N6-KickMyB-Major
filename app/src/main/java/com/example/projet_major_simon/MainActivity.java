@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.projet_major_simon.databinding.ActivityMainBinding;
 import com.example.projet_major_simon.http.RetrofitCookie;
@@ -104,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
                     }else {
                         Log.i("RETROFIT", response.code()+"");
                         progressD.dismiss();
+                        Toast.makeText(MainActivity.this,"Wrong Username or Password",Toast.LENGTH_SHORT).show();
+
+
+
 
                     }
                 }
@@ -111,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<SigninRequest> call, Throwable t) {
                     Log.i("RETROFIT", t.getMessage());
+
+
+
                 }
             });
 

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -45,6 +46,7 @@ public class InscriptionActivity extends AppCompatActivity {
          service = RetrofitCookie.post();
         final EditText et_u = findViewById(R.id.Edit_Text_Username);
         final EditText et_p = findViewById(R.id.Edit_Text_Password);
+        final EditText et_c = findViewById(R.id.Edit_Text_ConfirmationPassword);
 
 
 
@@ -56,12 +58,22 @@ public class InscriptionActivity extends AppCompatActivity {
                  signup = new SignupRequest();
                signup.username = et_u.getText().toString();
                 signup.password = et_p.getText().toString();
+                String Pass = et_p.getText().toString();
+                String ConPass = et_c.getText().toString();
 
                 progressD = ProgressDialog.show(InscriptionActivity.this, "Please wait",
                         "Long operation starts...", true);
                 // start the task that will stop it
-                new DialogTask<>().execute();
+                if (Pass.equals(ConPass))
+                {
+                    new DialogTask<>().execute();
 
+                }
+                else {
+                    progressD.dismiss();
+
+                    Toast.makeText(InscriptionActivity.this,"These passwords do not match",Toast.LENGTH_SHORT).show();
+                }
 
 
             }
@@ -71,12 +83,12 @@ public class InscriptionActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(C c) {
-            progressD.dismiss();
 
             service.Signuprequest(signup).enqueue(new Callback<SignupRequest>() {
                 @Override
                 public void onResponse(Call<SignupRequest> call, Response<SignupRequest> response) {
                     if (response.isSuccessful()) {
+                        progressD.dismiss();
 
                         SignupRequest resultat = response.body();
                         final String user = resultat.username;
@@ -87,6 +99,9 @@ public class InscriptionActivity extends AppCompatActivity {
 
                     }else {
                         Log.i("RETROFIT", response.code()+"");
+                        Toast.makeText(InscriptionActivity.this,"username already exists",Toast.LENGTH_SHORT).show();
+                        progressD.dismiss();
+
                     }
                 }
 
